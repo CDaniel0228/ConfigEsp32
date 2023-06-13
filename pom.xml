@@ -36,11 +36,6 @@
             <artifactId>javafx-fxml</artifactId>
             <version>11</version>
         </dependency>
-         <dependency>
-            <groupId>net.sourceforge.barbecue</groupId>
-            <artifactId>barbecue</artifactId>
-            <version>1.5-beta1</version>
-        </dependency>
         <dependency>
             <groupId>com.github.kenglxn.QRGen</groupId>
             <artifactId>javase</artifactId>
@@ -68,8 +63,32 @@
                         <!-- Usage: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>arduino.control.App</mainClass>
+                            <mainClass>arduino.App</mainClass>   
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>           
+                    <archive>
+                        <manifest>
+                            <mainClass>arduino.App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase> 
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

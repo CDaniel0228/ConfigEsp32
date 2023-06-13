@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 
 
@@ -18,6 +18,7 @@ public class Ficheros {
      FileInputStream entrada;
      FileOutputStream salida;
      FileWriter mensaje;
+     Alertas alertas=new Alertas();
      
      
     public boolean Guardar(File archivo, String document){
@@ -38,8 +39,7 @@ public class Ficheros {
         File archivoSeleccionado = fileChooser.showSaveDialog(null);
         if (archivoSeleccionado != null) {
             archivo=archivoSeleccionado.getAbsoluteFile();
-            Alertas alertas=new Alertas();
-            
+                        
             if (archivoSeleccionado.getName().equals("Configuracion_Esp32.txt")) {
                 boolean resultado = Guardar(archivoSeleccionado, area);
                 
@@ -69,35 +69,34 @@ public class Ficheros {
         return document;
     }
     
-    public void btnAbrir(TextField area){
-        File archivoSeleccionado = fileChooser.showSaveDialog(null);
+    public void btnAbrir(TextArea area){
+        File archivoSeleccionado = fileChooser.showOpenDialog(null);
         if (archivoSeleccionado != null) {
+            archivo=archivoSeleccionado.getAbsoluteFile();
             if (archivoSeleccionado.canRead()) {
                 if (archivoSeleccionado.getName().endsWith(".txt")) {
                     String contenido = Abrir(archivoSeleccionado);
                     area.setText(contenido);
                 } else {
-                    System.out.println("Archivo no compatible");
+                    alertas.mostrarAlertWarning("Archivo no compatible");
                 }
             }
         }
                 
     }
  
-    public void escribir(TextField area) {
-        
-        try{   
-            
-        mensaje =new FileWriter(archivo);
-        String document= area.getText();
-        BufferedWriter editar=new BufferedWriter(mensaje);
-        editar.append(document);
-        
-        editar.close();
-        System.out.println("El Archivo Se Edito");
-            
+    public void escribir(String area) {
+        try{
+            if(archivo!=null){
+                mensaje =new FileWriter(archivo);
+                BufferedWriter editar=new BufferedWriter(mensaje);
+                editar.write(area);
+                editar.close();
+            }else{
+                alertas.mostrarAlertError("Debe guardar o abrir un archivo");
+            }          
         }catch(IOException e){
-            System.out.println("Debe Elegir un Archivo");
+            
         }
     }
     

@@ -23,6 +23,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,6 +40,9 @@ import javafx.scene.control.Alert.AlertType;
 
 
 public class VentanaController implements Initializable {
+    Ficheros ficheros=new Ficheros();
+    LocalDate fechaActual = LocalDate.now();
+
     String fecha="";
     Preferences preferencias=Preferences.userRoot().node("setting");;
     boolean band= true;
@@ -57,10 +61,19 @@ public class VentanaController implements Initializable {
     private RadioButton btnRadio;
     @FXML
     private Button btnQr;
+    @FXML
+    private TextArea boxArea;
+    @FXML
+    private Button btnAbrir;
+    @FXML
+    private Button btnAgregar;
+    @FXML
+    private Button btnEliminar;
 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //preferencias.remove("id");
         boxWifi.setPromptText("nombre de la red");
         ObservableList<String> wifiNetworks = getWiFiNetworks();
         wifiComboBox.setItems(wifiNetworks);
@@ -71,6 +84,7 @@ public class VentanaController implements Initializable {
             boxCorreo.setText(dato);
             band=false;
         }
+        
         
     }
     
@@ -83,8 +97,8 @@ public class VentanaController implements Initializable {
                 alertas.mostrarAlertInfo("Se encuentran campos bacios");
                 
             }else{
-                Ficheros ficheros=new Ficheros(); 
-                ficheros.btnGuardar(wifiComboBox.getValue()+"\n"+boxPassw.getText()+"\n"+fecha+"\n");
+                ficheros.btnGuardar(boxCorreo.getText()+"\n"+wifiComboBox.getValue()+"\n"+boxPassw.getText()+"\n");
+                boxArea.setText(boxCorreo.getText()+"\n"+wifiComboBox.getValue()+"\n"+boxPassw.getText()+"\n");
                 preferencias.put("id", boxCorreo.getText());
                 band=false;
                 //preferencias.remove("");
@@ -98,30 +112,58 @@ public class VentanaController implements Initializable {
                 wifiComboBox.setVisible(true);
             }
         }else if(event.getSource()==btnQr){
-        ByteArrayOutputStream out = QRCode.from(boxCorreo.getText()).to(ImageType.PNG).stream();
-        ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-        Image qrImage = new Image(in);
+            ByteArrayOutputStream out = QRCode.from(boxCorreo.getText()).to(ImageType.PNG).stream();
+            ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+            Image qrImage = new Image(in);
 
-        // Crear el ImageView y mostrar el código QR
-        ImageView imageView = new ImageView(qrImage);
+            // Crear el ImageView y mostrar el código QR
+            ImageView imageView = new ImageView(qrImage);
 
-        // Configurar el tamaño del ImageView
-        imageView.setFitWidth(200);
-        imageView.setFitHeight(200);
+            // Configurar el tamaño del ImageView
+            imageView.setFitWidth(200);
+            imageView.setFitHeight(200);
 
-        // Crear un DialogPane personalizado
-        DialogPane dialogPane = new DialogPane();
-        dialogPane.setContent(imageView);
-        
-        // Crear la alerta y configurar el contenido
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Código QR");
-        alert.setHeaderText(null);
-        alert.setDialogPane(dialogPane);
-        
-        // Mostrar la alerta
-        alert.showAndWait();
-        dialogPane.getButtonTypes().add(ButtonType.CLOSE);
+            // Crear un DialogPane personalizado
+            DialogPane dialogPane = new DialogPane();
+            dialogPane.setContent(imageView);
+            
+            // Crear la alerta y configurar el contenido
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Código QR");
+            alert.setHeaderText(null);
+            alert.setDialogPane(dialogPane);
+            
+            // Mostrar la alerta
+            dialogPane.getButtonTypes().add(ButtonType.CLOSE);
+            dialogPane.lookupButton(ButtonType.CLOSE).setVisible(false);
+            alert.showAndWait();
+
+        }else if(event.getSource()==btnAbrir){
+            ficheros.btnAbrir(boxArea);
+
+        }else if(event.getSource()==btnAgregar){
+            if(boxEmpy()){
+                Alertas alertas=new Alertas();
+                alertas.mostrarAlertInfo("Se encuentran campos bacios");
+            }else{
+                if(boxArea.getParagraphs().size()<6){
+                    String aux=boxArea.getText()+wifiComboBox.getValue()+"\n"+boxPassw.getText()+"\n";
+                    ficheros.escribir(aux);
+                    boxArea.setText(aux);
+                }else{
+                    Alertas alertas=new Alertas();
+                    alertas.mostrarAlertInfo("No se permite agregar mas de 2 redes WIFI");
+                }
+                
+            }
+
+        }
+        else if(event.getSource()==btnEliminar){
+            Alertas alertas=new Alertas();
+            if(alertas.mostrarAlertConfirmation("¿Deseas realmente eliminar el contenido del archivo?")){
+                boxArea.setText(boxCorreo.getText()+"\n");
+                ficheros.escribir(boxCorreo.getText()+"\n");
+            }
 
         }
         
@@ -130,11 +172,11 @@ public class VentanaController implements Initializable {
 
     @FXML
     private void keyReleased(KeyEvent event) {
-        if(band){
-        LocalDate fechaActual = LocalDate.now();
-        fecha=generarId(fechaActual.toString().replace("-", ""), boxPassw.getText());
+        if(band & boxPassw.getText().length()<6){
+        fecha=generarId(fechaActual.toString().replace("-", "").replace("0", ""), boxPassw.getText());
         boxCorreo.setText(fecha);
         }
+
     }
 
     public boolean boxEmpy(){

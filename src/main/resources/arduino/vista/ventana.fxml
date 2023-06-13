@@ -21,14 +21,15 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="boxCorreo" editable="false" layoutX="138.0" layoutY="110.0" />
+      <TextField fx:id="boxCorreo" alignment="CENTER" editable="false" layoutX="149.0" layoutY="110.0" prefHeight="24.0" prefWidth="150.0" />
       <Label layoutX="217.0" layoutY="89.0" text="ID" />
       <TextField fx:id="boxWifi" layoutX="37.0" layoutY="189.0" visible="false" />
       <ComboBox fx:id="wifiComboBox" layoutX="47.0" layoutY="189.0" prefWidth="150.0" />
       <RadioButton fx:id="btnRadio" layoutX="36.0" layoutY="223.0" mnemonicParsing="false" onAction="#onClick" text="Escribir red" />
-      <TextArea editable="false" layoutX="23.0" layoutY="272.0" prefHeight="116.0" prefWidth="197.0" />
-      <Button fx:id="btnGuardar1" layoutX="235.0" layoutY="272.0" mnemonicParsing="false" onAction="#onClick" text="Agregar" />
-      <Button fx:id="btnGuardar11" layoutX="235.0" layoutY="306.0" mnemonicParsing="false" onAction="#onClick" text="Eliminar" />
+      <TextArea fx:id="boxArea" editable="false" layoutX="23.0" layoutY="272.0" prefHeight="116.0" prefWidth="197.0" />
+      <Button fx:id="btnAgregar" layoutX="236.0" layoutY="313.0" mnemonicParsing="false" onAction="#onClick" text="Agregar" />
+      <Button fx:id="btnEliminar" layoutX="234.0" layoutY="355.0" mnemonicParsing="false" onAction="#onClick" text="Eliminar" />
       <Button fx:id="btnQr" layoutX="321.0" layoutY="110.0" mnemonicParsing="false" onAction="#onClick" text="QR" />
+      <Button fx:id="btnAbrir" layoutX="235.0" layoutY="272.0" mnemonicParsing="false" onAction="#onClick" prefHeight="24.0" prefWidth="70.0" text="Abrir" />
    </children>
 </Pane>

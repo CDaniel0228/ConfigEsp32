@@ -1,8 +1,13 @@
 package arduino.control;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Alertas {
+    boolean band=false;
+
     public void mostrarAlertError(String msm) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -27,19 +32,21 @@ public class Alertas {
         alert.showAndWait();
     }
     
-    public void mostrarAlertConfirmation(String msm) {
+    public boolean mostrarAlertConfirmation(String msm) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText(null);
         alert.setTitle("Confirmacion");
-        alert.setContentText("¿Deseas realmente confirmar?");
-        alert.showAndWait();
+        alert.setContentText(msm);
+         // Customize the buttons
+         ButtonType buttonTypeYes = new ButtonType("Si"); 
+         alert.getButtonTypes().set(0,buttonTypeYes);
+         alert.showAndWait().ifPresent(result -> {
+             if (result == buttonTypeYes) {
+                 band=true;
+                 // Perform the action here
+             } 
+         });
+         return band;
     }
     
-    public void mostrarAlertCabecera(String msm) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Cabecera");
-        alert.setTitle("Info");
-        alert.setContentText("Informacion sobre la aplicación");
-        alert.showAndWait();
-    }
 }
