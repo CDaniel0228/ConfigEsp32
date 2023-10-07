@@ -8,8 +8,10 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
+
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
+
 
 
 public class Ficheros {
@@ -39,6 +41,7 @@ public class Ficheros {
         File archivoSeleccionado = fileChooser.showSaveDialog(null);
         if (archivoSeleccionado != null) {
             archivo=archivoSeleccionado.getAbsoluteFile();
+
                         
             if (archivoSeleccionado.getName().equals("Configuracion_Esp32.txt")) {
                 boolean resultado = Guardar(archivoSeleccionado, area);

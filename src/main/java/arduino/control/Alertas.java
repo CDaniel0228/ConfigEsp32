@@ -2,8 +2,6 @@ package arduino.control;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class Alertas {
     boolean band=false;

@@ -25,6 +25,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -73,6 +74,8 @@ public class VentanaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Tooltip tooltip = new Tooltip("El Uid se obtiene registrandose en la app movil \n link");
+        Tooltip.install(boxCorreo, tooltip);
         //preferencias.remove("id");
         boxWifi.setPromptText("nombre de la red");
         ObservableList<String> wifiNetworks = getWiFiNetworks();
@@ -172,10 +175,10 @@ public class VentanaController implements Initializable {
 
     @FXML
     private void keyReleased(KeyEvent event) {
-        if(band & boxPassw.getText().length()<6){
+        /*if(band & boxPassw.getText().length()<6){
         fecha=generarId(fechaActual.toString().replace("-", "").replace("0", ""), boxPassw.getText());
         boxCorreo.setText(fecha);
-        }
+        }*/
 
     }
 

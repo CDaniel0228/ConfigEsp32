@@ -5,8 +5,7 @@ module arduino {
     requires javase;
     requires core;
     
-
-
+    
 
     opens arduino.control to javafx.fxml;
     exports arduino.control;
